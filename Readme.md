@@ -62,7 +62,7 @@ Once that's ready, add 'External Script' as a new step in your NINA advanced seq
 ## Python Script Behavior
 
 ### Assumptions
-1. NINA File Structure: "$$DATEMINUS12$$\$$TARGETNAME$$\$$IMAGETYPE$$\$$DATETIME$$_$$EXPOSURETIME$$s_$$FRAMENR$$_$$STARCOUNT$$_$$HFR$$_$$RMSARCSEC$$"
+1. NINA File Structure: (see below)
 ..* the odering doesn't matter but the things you want to sort by need to be included in the NINA file structure
 2. Sorting, in order of priority:
 ..* Star Count
