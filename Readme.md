@@ -62,12 +62,12 @@ Once that's ready, add 'External Script' as a new step in your NINA advanced seq
 ## Python Script Behavior
 
 ### Assumptions
-1. NINA File Structure: (see below)
-..* the odering doesn't matter but the things you want to sort by need to be included in the NINA file structure
+1. NINA File Structure: \$$DATEMINUS12\$$\\$$TARGETNAME\$$\\$$IMAGETYPE\$$\\$$DATETIME\$$\_\$$EXPOSURETIME\$$s\_\$$FRAMENR\$$\_\$$STARCOUNT\$$\_\$$HFR\$$\_\$$RMSARCSEC\$$
++ the odering doesn't matter but the things you want to sort by need to be included in the NINA file structure
 2. Sorting, in order of priority:
-..* Star Count
-..* HFR
-..* RMS
++ Star Count
++ HFR
++ RMS
 3. Sort priority is arbitrary, but the output log file will tell you the first reason an image got sorted out if that is of interest
 
 Below is the python script. Whatever parameters you wish to sort by will need to be hard coded based on the position of that feature in your NINA file naming convention. The script parses the file by the default hyphen "_" separator, counting from the right. In the example below, RMS is the last item, and the first from the right, or the "-1" position, HFR = -2, and star count = -3. Any item that uses a decimel needs to be interpreted with "float" rather than "int", as demonstrated below. 
