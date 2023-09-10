@@ -44,7 +44,7 @@ The .bat file is designed to run at the end of your NINA advanced sequence, but 
 
 ```
 @echo off
-title Sort Unfit Based on Star Count (temp solution)
+title Sort NINA images
 
 cmd /k "cd /d <folder location here without brackets> && conda activate nina && python NINA_sort_for_HFR_RMS_Stars.py && exit"
 ```
