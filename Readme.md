@@ -52,7 +52,7 @@ cmd /k "cd /d <folder location here without brackets> && conda activate nina && 
 ### Example .bat
 ```
 @echo off
-title Sort Unfit Based on Star Count (temp solution)
+title Sort NINA images
 
 cmd /k "cd /d Z:\Pictures\Astro\NINA_Ingest && conda activate nina && python NINA_sort_for_HFR_RMS_Stars.py && exit"
 ```
@@ -62,7 +62,9 @@ Once that's ready, add 'External Script' as a new step in your NINA advanced seq
 ## Python Script Behavior
 
 ### Assumptions
-1. NINA File Structure: \$$DATEMINUS12\$$\\$$TARGETNAME\$$\\$$IMAGETYPE\$$\\$$DATETIME\$$\_\$$EXPOSURETIME\$$s\_\$$FRAMENR\$$\_\$$STARCOUNT\$$\_\$$HFR\$$\_\$$RMSARCSEC\$$
+1. NINA File Structure: 
+
+\$$DATEMINUS12\$$\\$$TARGETNAME\$$\\$$IMAGETYPE\$$\\$$DATETIME\$$\_\$$EXPOSURETIME\$$s\_\$$FRAMENR\$$\_\$$STARCOUNT\$$\_\$$HFR\$$\_\$$RMSARCSEC\$$
 + the odering doesn't matter but the things you want to sort by need to be included in the NINA file structure
 2. Sorting, in order of priority:
 + Star Count
