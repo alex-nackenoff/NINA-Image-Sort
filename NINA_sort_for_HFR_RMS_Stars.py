@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import shutil
 import sys
+calibration = ["FLAT", "DARK", "DARKFLAT", "BIAS", "SNAPSHOT"]
 
 # My NINA File Structure: $$DATEMINUS12$$\$$TARGETNAME$$\$$IMAGETYPE$$\$$DATETIME$$_$$EXPOSURETIME$$s_$$FRAMENR$$_$$STARCOUNT$$_$$HFR$$_$$RMSARCSEC$$
 # eg: pattern preview (including folders): 2015-12-31 › M33 › LIGHT › 2016-01-01_12-00-00_10.21s_0001_3294_3.25_0.65
@@ -18,7 +19,7 @@ latest_subdir = max(all_subdirs, key=os.path.getmtime)
 os.chdir(latest_subdir)
 sys.stdout = open('Unfit_Lights_logfile.txt', 'w')
 
-folders = [f for f in os.listdir() if os.path.isdir(f)]
+folders = [f for f in os.listdir() if os.path.isdir(f) and f not in calibration]
 
 for folder in folders:
     os.chdir(folder)
@@ -41,7 +42,7 @@ for folder in folders:
             new_path = 'unfit/' + image
             shutil.move(image, new_path)
             print("Moved " + image + " Due to Stars")
-        elif float(abc12345[-2])>4:
+        elif float(abc12345[-2])>4 or float(abc12345[-2])<0.1:
             #HFR
             #numbers with decimels requires float instead of int (integer)
             new_path = 'unfit/' + image
