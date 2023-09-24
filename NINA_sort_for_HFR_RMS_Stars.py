@@ -2,6 +2,12 @@ import os
 from pathlib import Path
 import shutil
 import sys
+from io import StringIO
+#comment out this if not using discord alert
+from discordwebhook import Discord
+
+#insert discord webhook url below inside quotes, or comment out if not using discord alert 
+discord = Discord(url="")
 calibration = ["FLAT", "DARK", "DARKFLAT", "BIAS", "SNAPSHOT"]
 
 # My NINA File Structure: $$DATEMINUS12$$\$$TARGETNAME$$\$$IMAGETYPE$$\$$DATETIME$$_$$EXPOSURETIME$$s_$$FRAMENR$$_$$STARCOUNT$$_$$HFR$$_$$RMSARCSEC$$
@@ -22,6 +28,12 @@ sys.stdout = open('Unfit_Lights_logfile.txt', 'w')
 folders = [f for f in os.listdir() if os.path.isdir(f) and f not in calibration]
 
 for folder in folders:
+    a = StringIO() 
+    counter = 0
+    counter_stars = 0
+    counter_hfr = 0
+    counter_guiding = 0
+    
     os.chdir(folder)
     os.chdir("LIGHT")
     sort_folder = "unfit"
@@ -41,18 +53,43 @@ for folder in folders:
             #STARCOUNT
             new_path = 'unfit/' + image
             shutil.move(image, new_path)
-            print("Moved " + image + " Due to Stars")
+            print("Moved " + image + " in " + folder + " Due to Stars")
+            counter += 1
+            counter_stars += 1
+
         elif float(abc12345[-2])>4 or float(abc12345[-2])<0.1:
             #HFR
             #numbers with decimels requires float instead of int (integer)
             new_path = 'unfit/' + image
             shutil.move(image, new_path)
-            print("Moved " + image + " Due to HFR")
+            print("Moved " + image + " in " + folder + " Due to HFR")
+            counter += 1
+            counter_hfr += 1
+
         elif float(abc12345[-1])>2.2:
             #RMSARCSEC
             new_path = 'unfit/' + image
             shutil.move(image, new_path)
-            print("Moved " + image + " Due to Guiding")
+            print("Moved " + image + " in " + folder +" Due to Guiding")
+            counter += 1
+            counter_guiding += 1
+            
     os.chdir("..")
     os.chdir("..")
+    
+    test1 = "Moved " + str(counter_stars) + " files due to stars"
+    test2 = "Moved " + str(counter_hfr) + " files due to HFR"
+    test3 = "Moved " + str(counter_guiding) + " files due to Guiding"
+    result = f"{counter/len(images):.0%}"
+    
+    a.write("Analyzing " + str(folder) +"......"+ "\n    " + "Moved " + str(counter)+ " ("+ result +")" + " total files")
+    if counter_stars != 0:
+        a.write("\n    " + test1)
+    if counter_hfr != 0:
+        a.write("\n    " + test2)
+    if counter_guiding != 0:
+        a.write("\n    " + test3)
+    print(a.getvalue())
+    # comment out below if you don't want Discord alerts
+    discord.post(content=(a.getvalue()))
 
